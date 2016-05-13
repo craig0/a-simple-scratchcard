@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>scratch card</title>
-
+    <meta charset="utf-8">
 </head>
 <body>
     <canvas id="test1" style="position: absolute;top: 0px;left: 0px;" width="600" height="600"></canvas>
@@ -13,6 +13,9 @@
     var ctx1 = canvas1.getContext('2d');
     ctx1.font = "100px Microsoft Yahei";
     ctx1.fillText("128√e980", 50, 200);
+
+    var xx,yy;
+    var radius = 30;
 
     var canvas = document.getElementById('test');
     var ctx = canvas.getContext('2d');
@@ -33,15 +36,15 @@
         if (!xx) {
             xx = x;
         } 
-        if (Math.abs(x - xx) > 60) {
-            for (var i = ((x > xx) ? xx : x) + 30; i < ((x > xx) ? x : xx) - 30; i = i +30 ) {
+        if (Math.abs(x - xx) > 2 * radius) {
+            for (var i = ((x > xx) ? xx : x) + radius; i < ((x > xx) ? x : xx) - radius; i = i +radius ) {
                 var x1 =i;
                 var y1 = x1 * (y - yy)/(x - xx)  + y - x * (y - yy)/(x - xx) ;
                 redraw(x1,y1);
             }
         }
-        if (Math.abs(y - yy) > 60) {
-            for (var i = ((y > yy) ? yy : y) + 30; i < ((y > yy) ? y : yy) - 30; i = i +30 ) {
+        if (Math.abs(y - yy) > 2 * radius) {
+            for (var i = ((y > yy) ? yy : y) + radius; i < ((y > yy) ? y : yy) - radius; i = i +radius ) {
                 var y1 =i;
                 var x1 = y1 * (x - xx)/(y - yy)  + x - y * (x - xx)/(y - yy) ;
                 redraw(x1,y1);
@@ -55,13 +58,12 @@
         xx = null;
         yy = null;
     })
-    var xx,yy;
     function redraw(x,y){
 
        var canvas = document.getElementById('test');
        var ctx = canvas.getContext('2d');
        ctx.beginPath();
-       ctx.arc(x, y, 30, 0, Math.PI*2, true);
+       ctx.arc(x, y, radius, 0, Math.PI*2, true);
        ctx.fill();
 
    }
