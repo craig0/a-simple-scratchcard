@@ -1,0 +1,70 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>scratch card</title>
+
+</head>
+<body>
+    <canvas id="test1" style="position: absolute;top: 0px;left: 0px;" width="600" height="600"></canvas>
+    <canvas id="test" style="position: absolute;top: 0px;left: 0px;" width="600" height="600"></canvas>
+</body>
+<script language="javascript" type="text/javascript">
+    var canvas1 = document.getElementById('test1');
+    var ctx1 = canvas1.getContext('2d');
+    ctx1.font = "100px Microsoft Yahei";
+    ctx1.fillText("128√e980", 50, 200);
+
+    var canvas = document.getElementById('test');
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = "#ccc";
+    ctx.fillRect(0,0,600,600);
+    ctx.globalCompositeOperation = 'destination-out';//这个属性的作用很关键，只有重画的地方才覆盖掉原来的内容。
+    canvas.addEventListener('touchstart',function(e){
+        var x =  e.touches[0].clientX  + document.documentElement.scrollLeft - document.documentElement.clientLeft;//这里的处理是加上border的值
+        var y =  e.touches[0].clientY  + document.documentElement.scrollTop - document.documentElement.clientTop;
+        redraw(x,y);
+    });
+    canvas.addEventListener('touchmove',function(e){
+        var x =  e.touches[0].clientX  + document.documentElement.scrollLeft - document.documentElement.clientLeft;
+        var y =  e.touches[0].clientY  + document.documentElement.scrollTop - document.documentElement.clientTop;
+        if (!yy) {
+            yy = y;
+        }
+        if (!xx) {
+            xx = x;
+        } 
+        if (Math.abs(x - xx) > 60) {
+            for (var i = ((x > xx) ? xx : x) + 30; i < ((x > xx) ? x : xx) - 30; i = i +30 ) {
+                var x1 =i;
+                var y1 = x1 * (y - yy)/(x - xx)  + y - x * (y - yy)/(x - xx) ;
+                redraw(x1,y1);
+            }
+        }
+        if (Math.abs(y - yy) > 60) {
+            for (var i = ((y > yy) ? yy : y) + 30; i < ((y > yy) ? y : yy) - 30; i = i +30 ) {
+                var y1 =i;
+                var x1 = y1 * (x - xx)/(y - yy)  + x - y * (x - xx)/(y - yy) ;
+                redraw(x1,y1);
+            }
+        }
+        redraw(x,y);
+        yy = y;
+        xx = x;
+    });
+    canvas.addEventListener('touchend',function(){
+        xx = null;
+        yy = null;
+    })
+    var xx,yy;
+    function redraw(x,y){
+
+       var canvas = document.getElementById('test');
+       var ctx = canvas.getContext('2d');
+       ctx.beginPath();
+       ctx.arc(x, y, 30, 0, Math.PI*2, true);
+       ctx.fill();
+
+   }
+
+</script>
+</html>
